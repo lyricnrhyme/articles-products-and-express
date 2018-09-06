@@ -1,0 +1,17 @@
+<head>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<h1>Edit Product:</h1>
+<form action='/products/:id/edit?_method=PUT' method='post'>
+    <label>Name: <input type='text' name='name'></label>
+    <br><br>
+    <label>Price: <input type='text' name='price'></label>
+    <br><br>
+    <label>Inventory: <input type='text' name='inventory'></label>
+    <br><br>
+    <input type='submit' value='Update'>
+</form>
+<br>
+<h3><a href='/products'>BACK TO PRODUCTS</a></h3>
+<br>
+{{> footer }}
