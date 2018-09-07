@@ -2,15 +2,17 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <h1>Edit Article:</h1>
-<form action='/articles/:title/edit?_method=PUT' method='post'>
+{{#with article}}
+<form action='/articles/{{title}}/edit?_method=PUT' method='post'>
     <label>Title: <input type='text' name='title'></label>
     <br><br>
     <label>Author: <input type='text' name='author'></label>
     <br><br>
-    <label>Description: <input type='text' name='body'></label>
+    <label>Description: <input type='text' name='description'></label>
     <br><br>
     <input type='submit' value='Update'>
 </form>
+{{/with}}
 <br>
 <h3><a href='/articles'>BACK TO ARTICLES</a></h3>
 <br>

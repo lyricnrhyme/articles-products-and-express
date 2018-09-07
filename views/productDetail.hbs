@@ -3,10 +3,12 @@
 </head>
 <h1>{{ name }}</h1>
 <br>
-<h2>Price:{{ price }}</h2>
+<h2>Price: ${{ price }}</h2>
 <br>
 <h2>Inventory:{{ inventory }}</h2>
 <br>
-<h3><a href='/products/:id/edit?_method=PUT'>EDIT PRODUCT</a></h3>
+<h3><a href='/products/{{id}}/edit'>EDIT PRODUCT</a></h3>
+<br>
+<h3><a href='/products/{{id}}/delete'>DELETE PRODUCT</a></h3>
 <br>
 <h3><a href='/products'>BACK TO PRODUCTS</a></h3>

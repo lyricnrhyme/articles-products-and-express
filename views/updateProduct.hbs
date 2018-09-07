@@ -2,16 +2,19 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <h1>Edit Product:</h1>
-<form action='/products/:id/edit?_method=PUT' method='post'>
-    <label>Name: <input type='text' name='name'></label>
+{{#with product}}
+<form action='/products/{{id}}/edit?_method=PUT' method='post'>
+    <label>Name: <input type='text' name='name' value={{name}} required></label>
     <br><br>
-    <label>Price: <input type='text' name='price'></label>
+    <label>Price: <input type='number' min='0.01' name='price' step='0.01' value={{price}} required></label>
     <br><br>
-    <label>Inventory: <input type='text' name='inventory'></label>
+    <label>Inventory: <input type='number' min='0' name='inventory' value={{inventory}} required></label>
     <br><br>
     <input type='submit' value='Update'>
 </form>
+{{/with}}
 <br>
+<h3 id='um' style='display:none'>Please Enter Name</h3>
 <h3><a href='/products'>BACK TO PRODUCTS</a></h3>
 <br>
 {{> footer }}

@@ -4,17 +4,17 @@ class Products {
         this._storage = [];
         this.add({
             name: 'Sword',
-            price: '$5.00',
+            price: '5.00',
             inventory: 10
         })
         this.add({
             name: 'Shield',
-            price: '$3.00',
+            price: '3.00',
             inventory: 10
         })
         this.add({
             name: 'Fairy',
-            price: '$0.50',
+            price: '0.50',
             inventory: 1
         })
     }
@@ -30,12 +30,11 @@ class Products {
         this._count++;
         return product.id;
     }
-    updateProductById(id) {
-
-    }
 
     deleteProductById(id) {
-        
+        let select = this._storage.filter(item => id == item.id)[0];
+        let index = this._storage.indexOf(select);
+        this._storage.splice(index, 1);
     }
 }
 

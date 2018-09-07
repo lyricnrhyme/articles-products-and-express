@@ -1,5 +1,6 @@
 class Articles {
     constructor() {
+        this._count = 1;
         this._storage = [];
         this.add({
             title: 'Winnie the Pooh',
@@ -24,15 +25,18 @@ class Articles {
         return this._storage.filter(item => title == item.title)[0];
     }
     add(article) {
+        article.id = this._count;
         this._storage.push(article);
-    }
-    updateArticleByTitle(title) {
-        let select = this._storage.getArticleByTitle(title);
-        let index = this._storage.indexOf(select);
-        return index;
+        this._count++;
+        return article.id;
     }
 
     deleteArticleByTitle(title) {
+        let select = this._storage.filter(item => title == item.title)[0];
+        console.log('test', select);
+        let index = this._storage.indexOf(select);
+        console.log('test2', index);
+        this._storage.splice(index, 1);
     }
 }
 

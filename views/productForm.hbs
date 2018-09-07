@@ -1,14 +1,19 @@
+<h1>Add New Product:</h1>
 <form action="/products/new" method="post">
   <label>Name:
-    <input type="text" name="name" id="">
+    <input type="text" name="name" id="" required>
   </label>
   <br><br>
   <label>Price:
-    <input type="text" name="price" id="">
+    <input type="number" min='0.01' name="price" step='0.01' id="" required>
   </label>
   <br><br>
   <label>Inventory:
-    <input type="text" name="inventory" id="">
+    <input type="number" min='1' name="inventory" id="" required>
+  </label>
+  <br><br>
+  <label>Attach Image:
+    <input type='file' name='image' accept='image/*'>
   </label>
   <br><br>
   <input type="submit" value="Submit">
