@@ -21,6 +21,11 @@ class Users {
     getUserByInfo(username, password) {
         return this._storage.filter(item => username == item.username && password == item.password)[0];
     }
+
+    getUserById(id) {
+        return this._storage.filter(item => id == item.id)[0];
+    }
+    
     add(user) {
         user.id = this._count;
         this._storage.push(user);

@@ -19,6 +19,7 @@ app.use(bp.urlencoded({ extended: true}));
 app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs');
 let authorized = false;
+let onlineUser;
 
 app.get('/', (req, res) => {
     if (!authorized) {
@@ -46,9 +47,53 @@ app.post('/login', (req, res) => {
     }
     else {
         authorized = true;
+        onlineUser = user.id;
         console.log('Welcome!');
+        console.log('online', onlineUser);
         res.redirect('/');
     }
+})
+
+//SETTINGS
+app.get('/settings', (req, res) => {
+    if (!authorized) {
+        res.redirect('/login');
+    } else {
+        res.render('settings');
+    }
+})
+
+//UPDATE PASSWORD
+app.get('/updatePassword', (req, res) => {
+    if (!authorized) {
+        res.redirect('/login');
+    } else {
+        res.render('updatePassword');
+    }
+})
+
+app.put('/updatePassword', (req, res) => {
+    if (!authorized) {
+        res.redirect('/login');
+    } else {
+        const user = DS_User.getUserById(onlineUser);
+        const newPassword = req.body;
+        console.log('yes', user)
+        console.log('yes2', newPassword);
+        if (newPassword.password !== newPassword.confirm) {
+            console.log('They no match');
+            res.redirect('/updatePassword');
+        } else if (newPassword.password === newPassword.confirm) {
+            user.password = newPassword.password;
+            res.redirect('/settings');  
+        }
+    }
+})
+
+//LOGOUT
+app.get('/logout', (req, res) => {
+    authorized = false;
+    res.redirect('/login');
 })
 
 //PRODUCTS
