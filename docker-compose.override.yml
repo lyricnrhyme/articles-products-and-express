@@ -10,7 +10,7 @@ services:
     environment:
       NODE_ENV: development
     ports:
-      - "${PORT}:${PORT}"
+      - "${EXPRESS_HOST_PORT}:${EXPRESS_CONTAINER_PORT}"
     networks:
       - this-app-network
 

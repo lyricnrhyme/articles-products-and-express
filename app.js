@@ -3,15 +3,12 @@ const app = express();
 const bp = require('body-parser');
 const exphbs = require('express-handlebars');
 const methodOverride = require('method-override');
-const fs = require('fs');
 const Articles = require('./db/articles.js');
 const Products = require('./db/products.js');
 const Users = require('./db/users.js');
 const DS_Art = new Articles();
 const DS_Prod = new Products();
 const DS_User = new Users();
-const PORT = process.env.PORT;
-
 
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
@@ -21,6 +18,7 @@ app.set('view engine', '.hbs');
 let authorized = false;
 let onlineUser;
 
+//HOMEPAGE
 app.get('/', (req, res) => {
     if (!authorized) {
         res.redirect('/login');
@@ -52,6 +50,19 @@ app.post('/login', (req, res) => {
         console.log('online', onlineUser);
         res.redirect('/');
     }
+})
+
+//SIGN UP
+app.get('/signUp', (req, res) => {
+    res.render('signUp');
+})
+
+app.post('/signUp', (req, res) => {
+    let newUser = req.body;
+    console.log('pls show', newUser);
+    DS_User.add(newUser);
+    authorized = true;
+    res.redirect('/');
 })
 
 //SETTINGS
@@ -93,6 +104,7 @@ app.put('/updatePassword', (req, res) => {
 //LOGOUT
 app.get('/logout', (req, res) => {
     authorized = false;
+    onlineUser = undefined;
     res.redirect('/login');
 })
 
@@ -276,6 +288,6 @@ app.get('/articles/:title/delete', (req, res) => {
     }
 })
 
-app.listen(PORT, () => {
-    console.log(`port:${PORT}`)
+app.listen(process.env.EXPRESS_CONTAINER_PORT, () => {
+    console.log(`port:${process.env.EXPRESS_CONTAINER_PORT}`)
 })

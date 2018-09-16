@@ -30,7 +30,6 @@ class Articles {
         this._count++;
         return article.id;
     }
-
     deleteArticleByTitle(title) {
         let select = this._storage.filter(item => title == item.title)[0];
         console.log('test', select);
