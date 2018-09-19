@@ -1,5 +1,6 @@
 class Products {
     constructor() {
+        this.knex = require('../knex/knex.js');
         this._count = 1;
         this._storage = [];
         this.add({
@@ -18,23 +19,25 @@ class Products {
             inventory: 1
         })
     }
+
     all() {
-        return [...this._storage];
+        return this.knex.raw('SELECT * FROM products')
     }
+
     getProductById(id) {
-        return this._storage.filter(item => id == item.id)[0];
+        return this.knex.raw(`SELECT * FROM products WHERE id=${id}`);
     }
+
     add(product) {
-        product.id = this._count;
-        this._storage.push(product);
-        this._count++;
-        return product.id;
+        return this.knex.raw(`INSERT INTO products (name, price, inventory, created_at, updated_at) VALUES ('${product.name}', '${product.price}', '${product.inventory}', now(), now())`);
+    }
+
+    updateProductById(newInfo, id) {
+        return this.knex.raw(`UPDATE products SET name='${newInfo.name}', price='${newInfo.price}', inventory='${newInfo.inventory}', updated_at=now() WHERE id=${id}`)
     }
 
     deleteProductById(id) {
-        let select = this._storage.filter(item => id == item.id)[0];
-        let index = this._storage.indexOf(select);
-        this._storage.splice(index, 1);
+        return this.knex.raw(`DELETE FROM products WHERE id=${id}`);
     }
 }
 

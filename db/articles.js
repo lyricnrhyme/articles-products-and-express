@@ -1,5 +1,6 @@
 class Articles {
     constructor() {
+        this.knex = require('../knex/knex.js');
         this._count = 1;
         this._storage = [];
         this.add({
@@ -18,24 +19,26 @@ class Articles {
             author: 'Boss Lady Dude'
         })
     }
+
     all() {
-        return [...this._storage];
+        return this.knex.raw('SELECT * FROM articles')
     }
+
     getArticleByTitle(title) {
-        return this._storage.filter(item => title == item.title)[0];
+        return this.knex.raw(`SELECT * FROM articles WHERE id=${id}`)
     }
+
     add(article) {
-        article.id = this._count;
-        this._storage.push(article);
-        this._count++;
-        return article.id;
+        return this.knex.raw(`INSERT INTO articles (title, author, description, created_at, updated_at) VALUES ('${article.title}', '${article.author}', '${article.description}', now(), now())`);
     }
+
+    updateArticleById(newInfo, id) {
+        return this.knex.raw(`UPDATE articles SET title='${newInfo.title}', author='${newInfo.author}', description='${article.description}', updated_at=now() WHERE id=${id}`)
+    }
+
+    //DO DIS
     deleteArticleByTitle(title) {
-        let select = this._storage.filter(item => title == item.title)[0];
-        console.log('test', select);
-        let index = this._storage.indexOf(select);
-        console.log('test2', index);
-        this._storage.splice(index, 1);
+        return this.knex.raw(``)
     }
 }
 

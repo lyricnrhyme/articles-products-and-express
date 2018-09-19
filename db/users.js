@@ -1,5 +1,6 @@
 class Users {
     constructor() {
+        this.knex = require('../knex/knex.js');
         this._count = 1;
         this._storage = [];
         this.add({
