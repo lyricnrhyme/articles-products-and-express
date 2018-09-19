@@ -9,16 +9,16 @@ Router.get('/products', (req, res) => {
     if (!authorized) {
         res.redirect('/login')
         .catch( err => {
-            console.log('error', err);
+            console.log('err', err);
         })
     } else {
-        DS_Prod.knex.raw('SELECT * FROM products')
+        DS_Prod.all()
         .then( results => {
             const products = results.rows
             res.render('products', { products });
         })
         .catch( err => {
-            console.log('error', err);
+            console.log('err', err);
         })
     }
 });

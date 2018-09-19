@@ -36,9 +36,8 @@ class Articles {
         return this.knex.raw(`UPDATE articles SET title='${newInfo.title}', author='${newInfo.author}', description='${article.description}', updated_at=now() WHERE id=${id}`)
     }
 
-    //DO DIS
     deleteArticleByTitle(title) {
-        return this.knex.raw(``)
+        return this.knex.raw(`DELETE FROM articles WHERE id=${id}`)
     }
 }
 

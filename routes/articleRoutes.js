@@ -7,21 +7,22 @@ const knex = require('../knex/knex.js');
 
 Router.get('/articles', (req, res) => {
     if (!authorized) {
-        res.redirect('/login');
+        res.redirect('/login')
+        .catch( err => {
+            console.log('err', err);
+        })
     } else {
         DS_Art.all()
         .then( results => {
             const articles = results.rows
-            console.log('hi', articles);
             res.render('articles', { articles });
         })
         .catch( err => {
-            console.log('error', err);
+            console.log('err', err);
         })
     }
 })
 
-//DO DIS
 Router.get('/articles/new', (req, res) => {
     if (!authorized) {
         res.redirect('/login');
@@ -30,76 +31,86 @@ Router.get('/articles/new', (req, res) => {
     }
 });
 
-//DO DIS
 Router.post('/articles/new', (req, res) => {
     if (!authorized) {
         res.redirect('/login');
     } else {
         const article = req.body;
-        DS_Art.add(article);
-        res.redirect('/articles')
+        DS_Art.add(article)
+        .then( results => {
+            res.redirect('/articles')
+        })
+        .catch( err => {
+            console.log('err', err);
+        })
     }
 });
 
-//DO DIS
 Router.get('/articles/:title', (req, res) => {
     if (!authorized) {
         res.redirect('/login');
     } else {
         const { title } = req.params;
-        const article = DS_Art.getArticleByTitle(title);
-        console.log('article', article);
-        console.log('************');
-        res.render('articleDetail', article);
+        DS_Art.getArticleByTitle(title)
+        .then( results => {
+            const article = results.rows[0];
+            res.render('articleDetail', article);
+        })
+        .catch( err => {
+            console.log('err', err);
+        })
     }
 });
 
-//DO DIS
 Router.get('/articles/:title/edit', (req, res) => {
     if (!authorized) {
         res.redirect('/login');
     } else {
         const { title } = req.params;
-        console.log('rekt', req.params)
-        const article = DS_Art.getArticleByTitle(title);
-        console.log('yay', article);
-        res.render('updateArticle', {article})        
+        DS_Art.getArticleByTitle(title)
+        .then( results => {
+            const article = results.rows[0];
+            res.render('updateArticle', {article});
+        })     
+        .catch( err => {
+            console.log('err', err);
+        })  
     }
 });
 
-//DO DIS
 Router.put('/articles/:title/edit', (req, res) => {
     if (!authorized) {
         res.redirect('/login');
     } else {
         const { title } = req.params;
-        const article = DS_Art.getArticleByTitle(title);
         const newInfo = req.body;
-        if (article.title !== newInfo.title) {
-            article.title = newInfo.title;
-        }
-        if (article.author !== newInfo.author) {
-            article.author = newInfo.author
-        }
-        if (article.description !== newInfo.description) {
-            article.description = newInfo.description;
-        }
-        res.redirect(`/articles/${title}`);        
+        DS_Art.updateArticleById(newInfo, title)
+        .then( results => {
+            const article = results.rows[0];
+            res.redirect(`/articles/${title}`)
+        }) 
+        .catch( err => {
+            console.log('err', err);
+        })    
     }
 });
 
-//DO DIS
 Router.get('/articles/:title/delete', (req, res) => {
     if (!authorized) {
         res.redirect('/login');
     } else {
         const { title } = req.params;
-        console.log('test3', title);
-        const article = DS_Art.getArticleByTitle(title);
-        console.log('hello?' )
-        DS_Art.deleteArticleByTitle(article.title);
-        const articles = DS_Art.all();
-        res.render('articles', {articles} );
+        DS_Art.deleteArticleByTitle(title)
+        .then( results => {
+            DS_Art.all()
+            .then( results => {
+                const articles = results.rows;
+                res.render('articles', {articles});
+            })
+            .catch( err => {
+                console.log('err', err);
+            })
+        })
     }
 })
 
